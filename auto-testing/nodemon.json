@@ -1,0 +1,8 @@
+{
+    "watch": ["features", "steps"],
+    "ext": "feature,ts",
+    "execMap": {
+      "js": "npx cucumber-js -p test_runner"
+    }
+  }
+  
