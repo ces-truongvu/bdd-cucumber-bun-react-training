@@ -1,0 +1,27 @@
+version: '3.4'
+services:
+  backend:
+    image: oven/bun:latest
+    env_file:
+      - backend/.env
+    ports:
+      - '3000:3000'
+    expose:
+      - '3000'
+    networks:
+      - integration
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:9000
+    ports:
+      - '3000:3000'
+    expose:
+      - '3000'
+    networks:
+      - integration
+networks:
+  integration:
+    driver: bridge
