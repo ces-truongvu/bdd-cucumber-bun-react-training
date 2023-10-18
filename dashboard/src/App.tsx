@@ -7,8 +7,7 @@ import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 import Button from '@mui/material/Button'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Login } from './features/Login'
-import { Copyright } from './components/Copyright'
+import { Copyright } from './components/Layout/Copyright'
 import './App.css'
 
 // TODO remove, this demo shouldn't need to reset the theme.

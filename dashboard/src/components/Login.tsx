@@ -1,18 +1,24 @@
 import React, { useState } from 'react'
 import { TextField, Button, Box, FormControlLabel, Checkbox, Grid, Link, Avatar, Typography } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import { useAuth } from '~/providers/AuthContext'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface LoginFormProps {}
 
 export const Login: React.FC<LoginFormProps> = () => {
   const [username, setUsername] = useState('ces-user')
   const [password, setPassword] = useState('blueJeanWhiteTshirt')
+  const auth = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const from = location.state?.from?.pathname || '/'
 
-  const handleUsernameChange = (event: any) => {
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value)
   }
 
-  const handlePasswordChange = (event: any) => {
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value)
   }
 
@@ -21,26 +27,9 @@ export const Login: React.FC<LoginFormProps> = () => {
       username,
       password
     }
-
-    try {
-      const response = await fetch('/api/users/sign-in', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(loginData)
-      })
-
-      if (!response.ok) {
-        throw new Error('Login failed')
-      }
-
-      const responseData = await response.json()
-      // Handle successful login response
-      console.log('Login successful:', responseData)
-    } catch (error) {
-      console.error('Error logging in:', error)
-    }
+    auth.signin(loginData, () => {
+      navigate(from, { replace: true })
+    })
   }
 
   return (
@@ -58,7 +47,7 @@ export const Login: React.FC<LoginFormProps> = () => {
       <Typography component='h1' variant='h5'>
         Sign in
       </Typography>
-      <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+      <Box component='form' noValidate sx={{ mt: 1 }}>
         <TextField
           margin='normal'
           required
@@ -84,7 +73,7 @@ export const Login: React.FC<LoginFormProps> = () => {
           onChange={handlePasswordChange}
         />
         <FormControlLabel control={<Checkbox value='remember' color='primary' />} label='Remember me' />
-        <Button type='button' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+        <Button type='button' onClick={handleSubmit} fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
           Sign In
         </Button>
         <Grid container>

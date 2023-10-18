@@ -1,7 +1,18 @@
-import { Elysia, t } from 'elysia'
-import { faker } from '@faker-js/faker'
+import { Elysia } from 'elysia'
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
 import { Handler } from './utils'
+import { employeesCache } from './employees.mock'
+
+export type EmployeeType = {
+  id: string
+  name: string
+  title: string
+  email: string
+  phone: string
+  address: string
+  bio: string
+  image: string
+}
 
 export const employees = new Elysia({ prefix: '/employees' })
   .derive(() => {
@@ -10,19 +21,18 @@ export const employees = new Elysia({ prefix: '/employees' })
     }
   })
   .get('/', () => {
-    const createEmployee = () => {
-      return {
-        id: faker.string.uuid(),
-        name: faker.person.fullName(),
-        title: faker.person.jobTitle(),
-        email: faker.internet.email(),
-        phone: faker.phone.number(),
-        address: faker.location.streetAddress(),
-        bio: faker.person.bio(),
-        image: faker.image.urlLoremFlickr({ width: 151, height: 151, category: 'portrait,bw' })
-      }
-    }
+    const employees: Array<EmployeeType> = employeesCache.get('employees') as Array<EmployeeType>
+    const data = employees.map(({ id, name, title, image }: EmployeeType) => {
+      return { id, name, title, image }
+    })
 
-    const data = faker.helpers.multiple(createEmployee, { count: 16 })
+    return Handler.Response(StatusCodes.OK, { message: ReasonPhrases.OK, data })
+  })
+  .get('/:id', ({ params: { id } }) => {
+    const employees: Array<EmployeeType> = employeesCache.get('employees') as Array<EmployeeType>
+    const data = employees.find((employee: EmployeeType) => {
+      return employee.id === id
+    })
+
     return Handler.Response(StatusCodes.OK, { message: ReasonPhrases.OK, data })
   })

@@ -24,3 +24,19 @@ export async function getAllEmployees(): Promise<Array<EmployeeType>> {
     throw new Error('Employee ')
   }
 }
+
+export async function getEmployeeById(id: string | undefined): Promise<EmployeeType> {
+  try {
+    const response = await fetch(`/api/employees/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    const { data } = await response.json()
+    return data
+  } catch {
+    throw new Error('Employee ')
+  }
+}

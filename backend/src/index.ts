@@ -3,15 +3,11 @@ import { users } from './users'
 import { employees } from './employees'
 
 const API_VERSION = 'v1'
-const plugin =
-  (prefix: string = `/api/${API_VERSION}`) =>
-  (customPlugin: any) => {
-    return new Elysia({ prefix }).use(customPlugin)
-  }
-
-const app = new Elysia()
-  .use(plugin()(users))
-  .use(plugin()(employees))
+const app = new Elysia({
+  prefix: `/api/${API_VERSION}`
+})
+  .use(employees)
+  .use(users)
   .get('/version', () => API_VERSION)
   .listen(3000)
 
