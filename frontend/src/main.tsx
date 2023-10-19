@@ -5,7 +5,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 // import { App } from './App.tsx'
 import { DefaultLayout } from '~/components/Layout/Default.tsx'
-import { Login } from '~/components/Login.tsx'
+import { Login } from '~/routes/Login.tsx'
+import { Profile } from '~/routes/Profile.tsx'
 import { RequireAuth } from './providers/RequireAuth.tsx'
 import { ErrorPage } from './routes/ErrorPage.tsx'
 import { Employees } from './routes/Employees.tsx'
@@ -15,9 +16,13 @@ import './index.css'
 
 const router = createBrowserRouter([
   {
+    id: 'root',
     path: '/',
     element: <DefaultLayout />,
     errorElement: <ErrorPage />,
+    loader() {
+      return { username: '' }
+    },
     children: [
       {
         loader: async () => await getAllEmployees(),
@@ -40,6 +45,14 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login />
+      },
+      {
+        path: '/profile',
+        element: (
+          <RequireAuth>
+            <Profile />
+          </RequireAuth>
+        )
       }
     ]
   }

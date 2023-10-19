@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 import { TextField, Button, Box, FormControlLabel, Checkbox, Grid, Link, Avatar, Typography } from '@mui/material'
+import Snackbar from '@mui/material/Snackbar'
+import LoadingButton from '@mui/lab/LoadingButton'
+import Alert from '@mui/material/Alert'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import SendIcon from '@mui/icons-material/SendOutlined'
 import { useAuth } from '~/providers/AuthContext'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-interface LoginFormProps {}
-
-export const Login: React.FC<LoginFormProps> = () => {
+export const Login: React.FC = () => {
   const [username, setUsername] = useState('ces-user')
   const [password, setPassword] = useState('blueJeanWhiteTshirt')
+  const [loading, setLoading] = React.useState(false)
+  const [open, setOpen] = useState(false)
+  const [message, setMessage] = useState('')
+
   const auth = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
@@ -23,13 +29,21 @@ export const Login: React.FC<LoginFormProps> = () => {
   }
 
   const handleSubmit = async () => {
-    const loginData = {
-      username,
-      password
-    }
-    auth.signin(loginData, () => {
+    try {
+      setLoading(true)
+      const loginData = {
+        username,
+        password
+      }
+      await auth.signin(loginData)
       navigate(from, { replace: true })
-    })
+    } catch (error: Error | any) {
+      setMessage('Login failed')
+      setOpen(true)
+
+      setTimeout(() => setLoading(false), 500)
+      throw new Error(error?.message)
+    }
   }
 
   return (
@@ -41,6 +55,11 @@ export const Login: React.FC<LoginFormProps> = () => {
         alignItems: 'center'
       }}
     >
+      <Snackbar autoHideDuration={5000} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={open}>
+        <Alert onClose={() => setOpen(false)} severity='error' sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
         <LockOutlinedIcon />
       </Avatar>
@@ -73,9 +92,16 @@ export const Login: React.FC<LoginFormProps> = () => {
           onChange={handlePasswordChange}
         />
         <FormControlLabel control={<Checkbox value='remember' color='primary' />} label='Remember me' />
-        <Button type='button' onClick={handleSubmit} fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-          Sign In
-        </Button>
+        <LoadingButton
+          fullWidth
+          onClick={handleSubmit}
+          endIcon={<SendIcon />}
+          loading={loading}
+          loadingPosition='end'
+          variant='contained'
+        >
+          <span>Sign In</span>
+        </LoadingButton>
         <Grid container>
           <Grid item xs>
             <Link href='#' variant='body2'>

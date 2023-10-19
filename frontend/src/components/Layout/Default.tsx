@@ -5,10 +5,10 @@ import GlobalStyles from '@mui/material/GlobalStyles'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import styled from 'styled-components'
 import { Copyright } from '~/components/Layout/Copyright'
+import { AuthStatus } from '../Auth/AuthStatus'
 import { AuthProvider } from '~/providers/AuthContext'
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme()
@@ -27,6 +27,8 @@ const StyledLink = styled(Link)`
 `
 
 export function DefaultLayout() {
+  // const { username } = useRouteLoaderData('root') as { username: string | null }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <AuthProvider>
@@ -41,12 +43,10 @@ export function DefaultLayout() {
             <Typography variant='h6' color='inherit' noWrap sx={{ flexGrow: 1 }}>
               <StyledLink to='/'>CES</StyledLink>
             </Typography>
-            <nav>
+            {/* <nav>
               <StyledLink to='/'>Support</StyledLink>
-            </nav>
-            <Button href='#' variant='outlined' sx={{ my: 1, mx: 1.5 }}>
-              Login
-            </Button>
+            </nav> */}
+            <AuthStatus />
           </Toolbar>
         </AppBar>
         <Container component='main' maxWidth='lg'>

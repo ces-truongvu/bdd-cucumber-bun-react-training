@@ -1,9 +1,16 @@
-version: '3.4'
+version: '3.9'
 services:
   backend:
+    container_name: backend
     image: oven/bun:latest
+    working_dir: /app
+    tty: true
+    user: root
     env_file:
       - backend/.env
+    volumes:
+      - ./backend:/app
+    command: sh -c "bun dev"
     ports:
       - '3000:3000'
     expose:
@@ -12,14 +19,18 @@ services:
       - integration
 
   frontend:
-    build: ./frontend
     container_name: frontend
-    environment:
-      - REACT_APP_BACKEND_URL=http://localhost:9000
+    image: node:18-alpine
+    working_dir: /app
+    tty: true
+    user: root
+    volumes:
+      - ./frontend:/app
+    command: sh -c "npm run dev --host"
     ports:
-      - '3000:3000'
+      - '5173:5173'
     expose:
-      - '3000'
+      - '5173'
     networks:
       - integration
 networks:

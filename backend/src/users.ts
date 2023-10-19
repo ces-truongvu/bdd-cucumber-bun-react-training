@@ -29,7 +29,13 @@ export const users = new Elysia({ prefix: '/users' })
       }
 
       set.status = StatusCodes.OK
-      return Handler.Response(StatusCodes.OK, { message: ReasonPhrases.OK, data: { token: faker.string.nanoid(50) } })
+      return Handler.Response(StatusCodes.OK, {
+        message: ReasonPhrases.OK,
+        data: {
+          username,
+          token: faker.string.nanoid(50)
+        }
+      })
     },
     {
       body: 'sign'

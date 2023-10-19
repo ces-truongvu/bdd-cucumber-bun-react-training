@@ -1,5 +1,4 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import { useDebounce } from '@uidotdev/usehooks'
 
@@ -12,7 +11,7 @@ export function SearchBar({ onSearchTermChange }: { onSearchTermChange(updatedTe
   }, [debounceQuery, onSearchTermChange])
 
   return (
-    <Grid item xs={12} sm={12} md={12}>
+    <>
       <TextField
         label='Search'
         variant='outlined'
@@ -20,6 +19,6 @@ export function SearchBar({ onSearchTermChange }: { onSearchTermChange(updatedTe
         onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
         sx={{ mb: 2 }}
       />
-    </Grid>
+    </>
   )
 }
