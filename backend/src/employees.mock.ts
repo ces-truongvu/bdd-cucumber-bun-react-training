@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
-import { Cache } from 'memory-cache'
 import { EmployeeType } from './employees'
+import fs from 'fs'
 
 const createEmployee = (): EmployeeType => {
   return {
@@ -15,6 +15,8 @@ const createEmployee = (): EmployeeType => {
   }
 }
 
-const employeesInCache: Array<EmployeeType> = faker.helpers.multiple(createEmployee, { count: 16 })
-export const employeesCache = new Cache()
-employeesCache.put('employees', employeesInCache)
+export const generateMockData = (): Array<EmployeeType> => faker.helpers.multiple(createEmployee, { count: 16 })
+
+// import { Cache } from 'memory-cache'
+// export const employeesCache = new Cache()
+// employeesCache.put('employees', employeesInCache)

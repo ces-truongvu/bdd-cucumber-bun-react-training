@@ -11,6 +11,7 @@
     "test": "npx cucumber-js -p test_runner",
     "test-tags": "npx cucumber-js -p test_runner --tags",
     "test-watch": "nodemon",
+    "codegen": "playwright codegen --load-storage state.json http://localhost:5173",
     "format": "npx prettier --write ./pages ./steps ./setup",
     "report": "node ./reporter.js"
   },

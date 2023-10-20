@@ -1,22 +1,6 @@
-import { expect, Response } from '@playwright/test'
-import { requestContext } from '../setup/api'
+import { expect } from '@playwright/test'
 import { page } from '../setup/hooks'
 import { Given, When, Then } from '@cucumber/cucumber'
-
-let response: Response
-
-// Given('I am on the login endpoint and enter the PIN number {int}', async function (int) {
-//     response = await requestContext.post(`/users/sign-in`, {
-//         data: {
-//           pin: int,
-//         }
-//     });
-// });
-
-// Then('the result should be as {string}', async function (string) {
-//     const res = await response.json();
-//     expect(res).toEqual({ message: string });
-// });
 
 Given('I am on the login page', async function () {
   await page.goto('http://localhost:5173/login')

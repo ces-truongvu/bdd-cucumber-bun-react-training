@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia'
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
-import { Handler } from './utils'
+import { handler } from './utils'
 import { faker } from '@faker-js/faker'
 
 export type SignIn = {
@@ -25,11 +25,11 @@ export const users = new Elysia({ prefix: '/users' })
     ({ body, set }) => {
       const { username, password } = body
       if (username !== String(process.env.USERNAME) || password !== String(process.env.PASSWORD)) {
-        return Handler.Response(StatusCodes.UNAUTHORIZED, { message: ReasonPhrases.UNAUTHORIZED })
+        return handler.response(StatusCodes.UNAUTHORIZED, { message: ReasonPhrases.UNAUTHORIZED })
       }
 
       set.status = StatusCodes.OK
-      return Handler.Response(StatusCodes.OK, {
+      return handler.response(StatusCodes.OK, {
         message: ReasonPhrases.OK,
         data: {
           username,

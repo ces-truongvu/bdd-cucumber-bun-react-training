@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia'
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
-import { Handler } from './utils'
-import { employeesCache } from './employees.mock'
+import { handler } from './utils'
+import { EmployeeRepository } from './employee.repository'
 
 export type EmployeeType = {
   id: string
@@ -14,25 +14,24 @@ export type EmployeeType = {
   image: string
 }
 
+const repository = new EmployeeRepository('./src/employees.json')
+
 export const employees = new Elysia({ prefix: '/employees' })
   .derive(() => {
     return {
       'Content-Type': 'application/json'
     }
   })
-  .get('/', () => {
-    const employees: Array<EmployeeType> = employeesCache.get('employees') as Array<EmployeeType>
+  .get('/', async () => {
+    const employees: Array<EmployeeType> = await repository.getAllEmployees()
     const data = employees.map(({ id, name, title, image }: EmployeeType) => {
       return { id, name, title, image }
     })
 
-    return Handler.Response(StatusCodes.OK, { message: ReasonPhrases.OK, data })
+    return handler.response(StatusCodes.OK, { message: ReasonPhrases.OK, data })
   })
-  .get('/:id', ({ params: { id } }) => {
-    const employees: Array<EmployeeType> = employeesCache.get('employees') as Array<EmployeeType>
-    const data = employees.find((employee: EmployeeType) => {
-      return employee.id === id
-    })
+  .get('/:id', async ({ params: { id } }) => {
+    const data: EmployeeType = (await repository.getEmployeeById(id)) as EmployeeType
 
-    return Handler.Response(StatusCodes.OK, { message: ReasonPhrases.OK, data })
+    return handler.response(StatusCodes.OK, { message: ReasonPhrases.OK, data })
   })
