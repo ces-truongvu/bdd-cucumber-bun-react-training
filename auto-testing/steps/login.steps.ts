@@ -29,6 +29,12 @@ When('I enter a valid username and password', async function () {
 
 Then('I should be redirected to the Home page', async function () {
   await page.getByRole('button', { name: 'Sign In' }).click()
+
+  // create state.json file
+  await page.context().storageState({
+    path: 'state.json'
+  })
+
   expect(page.getByRole('button', { name: 'Welcome! ces-user' })).toBeTruthy()
 })
 

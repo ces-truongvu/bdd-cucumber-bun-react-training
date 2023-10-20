@@ -1,5 +1,6 @@
-import React from 'react'
-import { useLocation, Navigate } from 'react-router-dom'
+import { useState, useContext, createContext, ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useLocalStorage } from '@uidotdev/usehooks'
 import { authService, AuthDTO, SignInResponse } from '~/services/AuthService'
 
 interface AuthContextType {
@@ -9,7 +10,7 @@ interface AuthContextType {
   signout: (callback: VoidFunction) => void
 }
 
-let AuthContext = React.createContext<AuthContextType>(null!)
+let AuthContext = createContext<AuthContextType>(null!)
 
 /**
  * AuthProvider component that provides authentication functionality to its children components.
@@ -17,10 +18,11 @@ let AuthContext = React.createContext<AuthContextType>(null!)
  * @param children - The children components that will have access to the authentication functionality.
  * @returns The provider component that wraps the children components.
  */
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const navigate = useNavigate()
   // State variable to store the authentication token
-  const [token, setToken] = React.useState<string>('')
-  const [username, setUsername] = React.useState<string>('')
+  const [token, setToken] = useLocalStorage('auth-token', '')
+  const [username, setUsername] = useState<string>('')
 
   const signin = async (credential: AuthDTO) => {
     const { username, token }: SignInResponse = await authService.signin(credential)
@@ -31,6 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signout = () => {
     return authService.signout().then(() => {
       setToken('')
+      navigate('/login')
     })
   }
 
@@ -42,5 +45,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAuth() {
-  return React.useContext(AuthContext)
+  return useContext(AuthContext)
 }
