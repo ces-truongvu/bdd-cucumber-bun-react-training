@@ -1,5 +1,6 @@
 import { expect, Response } from '@playwright/test'
 import { requestContext } from '../setup/api'
+import { page } from '../setup/hooks'
 import { Given, When, Then } from '@cucumber/cucumber'
 
 let response: Response
@@ -17,27 +18,26 @@ let response: Response
 //     expect(res).toEqual({ message: string });
 // });
 
-Given('I am on the login page', function () {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending'
+Given('I am on the login page', async function () {
+  await page.goto('http://localhost:5173/login')
 })
 
-When('I enter a valid username {string} and password {string}', function (string, string2) {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending'
+When('I enter a valid username and password', async function () {
+  await page.getByLabel('Username *').fill('ces-user')
+  await page.getByLabel('Password *').fill('blueJeanWhiteTshirt')
 })
 
-Then('I should be redirected to the Home page', function () {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending'
+Then('I should be redirected to the Home page', async function () {
+  await page.getByRole('button', { name: 'Sign In' }).click()
+  expect(page.getByRole('button', { name: 'Welcome! ces-user' })).toBeTruthy()
 })
 
-When('I enter an invalid username and password', function () {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending'
+When('I enter an invalid username and password', async function () {
+  await page.getByLabel('Username *').fill('wrong-username')
+  await page.getByLabel('Password *').fill('wrong-pass')
 })
 
-Then('I should see an error message {string}', function (string) {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending'
+Then('I should see an error message {string}', async function (string) {
+  await page.getByRole('button', { name: 'Sign In' }).click()
+  expect(await page.getByText(string)).toBeTruthy()
 })

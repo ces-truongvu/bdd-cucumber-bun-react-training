@@ -1,20 +1,20 @@
-import { LaunchOptions } from "playwright";
-import "dotenv/config";
+import { LaunchOptions } from 'playwright'
+import 'dotenv/config'
 
 const playwrightLaunchOptions: LaunchOptions = {
   headless: false,
   slowMo: 100
-};
+}
 
 type Dimension = {
-  width: number;
-  height: number;
-};
+  width: number
+  height: number
+}
 
 interface ViewPort {
-  laptop: Dimension;
-  tablet: Dimension;
-  mobile: Dimension;
+  laptop: Dimension
+  tablet: Dimension
+  mobile: Dimension
 }
 
 const deviceViewPort: ViewPort = {
@@ -30,25 +30,25 @@ const deviceViewPort: ViewPort = {
     width: 390,
     height: 844
   }
-};
+}
 
 const screen = (): Dimension => {
-  const customWidth = process.env.CUSTOM_WIDTH || 0;
-  const customHeight = process.env.CUSTOM_HEIGHT || 0;
+  const customWidth = process.env.CUSTOM_WIDTH || 0
+  const customHeight = process.env.CUSTOM_HEIGHT || 0
   if (customWidth && customHeight) {
     return {
       width: Number(customWidth),
       height: Number(customHeight)
-    };
+    }
   }
 
-  return deviceViewPort[process.env.DEVICE_VIEWPORT as keyof ViewPort];
-};
+  return deviceViewPort[process.env.DEVICE_VIEWPORT as keyof ViewPort]
+}
 
 export const config = {
   baseUrl: process.env.BASE_URL,
   setDefaultTimeout: Number(process.env.DEFAULT_TIMEOUT),
   playwrightLaunchOptions,
   screen: screen(),
-  noneLoggedInTags: ["@login-success", "@login-unsuccess"]
-};
+  noneLoggedInTags: ['@login-success', '@login-unsuccess']
+}

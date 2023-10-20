@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextField, Button, Box, FormControlLabel, Checkbox, Grid, Link, Avatar, Typography } from '@mui/material'
+import { TextField, Box, FormControlLabel, Checkbox, Grid, Link, Avatar, Typography } from '@mui/material'
 import Snackbar from '@mui/material/Snackbar'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Alert from '@mui/material/Alert'
@@ -38,7 +38,7 @@ export const Login: React.FC = () => {
       await auth.signin(loginData)
       navigate(from, { replace: true })
     } catch (error: Error | any) {
-      setMessage('Login failed')
+      setMessage('Unable to sign in')
       setOpen(true)
 
       setTimeout(() => setLoading(false), 500)
