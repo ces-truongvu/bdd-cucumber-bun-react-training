@@ -3,8 +3,8 @@ type ResponseType<T> = {
   data?: T
 }
 export const handler = {
-  response: (code: number, message: ResponseType<any>) =>
-    new Response(JSON.stringify(message), {
+  response: (code: number, response: ResponseType<any>) =>
+    new Response(JSON.stringify(response), {
       status: code,
       headers: {
         'Content-Type': 'application/json'

@@ -9,6 +9,22 @@ export type EmployeeType = {
   image: string
 }
 
+export async function updateEmployee(body: EmployeeType): Promise<EmployeeType> {
+  try {
+    const response = await fetch('/api/employees', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+
+    const { data } = await response.json()
+    return data
+  } catch {
+    throw new Error('Employee ')
+  }
+}
 export async function getAllEmployees(): Promise<Array<EmployeeType>> {
   try {
     const response = await fetch('/api/employees', {

@@ -4,7 +4,6 @@ import { employees } from './employees'
 
 const API_VERSION = 'v1'
 const app = new Elysia({
-  
   prefix: `/api/${API_VERSION}`
 })
   .use(employees)

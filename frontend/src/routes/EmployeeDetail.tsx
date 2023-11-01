@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react'
+import { useDebounce } from '@uidotdev/usehooks'
 import { useLoaderData } from 'react-router-dom'
 import {
   List,
@@ -11,14 +13,29 @@ import {
   CardMedia,
   CardContent,
   Box,
-  Divider
+  TextField,
+  InputAdornment
 } from '@mui/material'
 import { Person, Email, Phone, House, CardMembership } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
-import { EmployeeType } from '~/services/EmployeeService'
+import { EmployeeType, updateEmployee } from '~/services/EmployeeService'
 
 export function EmployeeDetail() {
-  const employee = useLoaderData() as EmployeeType
+  const getEmployee = useLoaderData() as EmployeeType
+  const [employee, setEmployee] = useState<EmployeeType>({ ...getEmployee })
+  const debounceUpdate = useDebounce(employee, 500)
+
+  const handleOnblur = () => {
+    async function doUpdateData() {
+      try {
+        await updateEmployee({ ...debounceUpdate })
+      } catch (error: Error | any) {
+        throw new Error(error?.message || 'Something went wrong')
+      }
+    }
+
+    doUpdateData()
+  }
 
   return (
     <>
@@ -27,7 +44,7 @@ export function EmployeeDetail() {
           <Link style={{ color: 'unset', textDecoration: 'none' }} to='/'>
             Home
           </Link>
-          <Typography color='text.primary'>{employee.name}</Typography>
+          <Typography color='text.primary'>{employee?.name}</Typography>
         </Breadcrumbs>
       </Grid>
       <Grid item xs={12} md={12}>
@@ -36,46 +53,125 @@ export function EmployeeDetail() {
             <CardContent sx={{ flex: '1 0 auto' }}>
               <List>
                 <ListItem>
-                  <ListItemIcon>
-                    <Person />
-                  </ListItemIcon>
-                  <ListItemText primary={employee.name} />
+                  <ListItemText>
+                    <TextField
+                      value={employee?.name}
+                      onBlur={handleOnblur}
+                      onChange={(e) => {
+                        setEmployee({ ...employee, name: e.target.value })
+                      }}
+                      variant='standard'
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <Person />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </ListItemText>
                 </ListItem>
                 <ListItem>
-                  <ListItemIcon>
-                    <CardMembership />
-                  </ListItemIcon>
-                  <ListItemText primary={employee.title} />
+                  <ListItemText>
+                    <TextField
+                      value={employee?.title}
+                      disabled={false}
+                      onBlur={handleOnblur}
+                      onChange={(event) => {
+                        setEmployee({ ...employee, title: event.target.value })
+                      }}
+                      variant='standard'
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <CardMembership />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </ListItemText>
                 </ListItem>
                 <ListItem>
-                  <ListItemIcon>
-                    <Phone />
-                  </ListItemIcon>
-                  <ListItemText primary={employee.phone} />
+                  <ListItemText>
+                    <TextField
+                      value={employee?.phone}
+                      disabled={false}
+                      onBlur={handleOnblur}
+                      onChange={(event) => {
+                        setEmployee({ ...employee, phone: event.target.value })
+                      }}
+                      variant='standard'
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <Phone />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </ListItemText>
                 </ListItem>
                 <ListItem>
-                  <ListItemIcon>
-                    <Email />
-                  </ListItemIcon>
-                  <ListItemText primary={employee.email} />
+                  <ListItemText>
+                    <TextField
+                      value={employee?.email}
+                      disabled={false}
+                      onBlur={handleOnblur}
+                      onChange={(event) => {
+                        setEmployee({ ...employee, email: event.target.value })
+                      }}
+                      variant='standard'
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <Email />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </ListItemText>
                 </ListItem>
                 <ListItem>
-                  <ListItemIcon>
-                    <House />
-                  </ListItemIcon>
-                  <ListItemText primary={employee.address} />
+                  <ListItemText>
+                    <TextField
+                      value={employee?.address}
+                      disabled={false}
+                      onBlur={handleOnblur}
+                      onChange={(event) => {
+                        setEmployee({ ...employee, address: event.target.value })
+                      }}
+                      variant='standard'
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <House />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </ListItemText>
                 </ListItem>
-                <Divider variant='inset' component='li' />
                 <ListItem>
-                  <Typography variant='subtitle1' color='text.secondary' component='div'>
-                    {employee.bio}
-                  </Typography>
+                  <ListItemText>
+                    <TextField
+                      value={employee?.bio}
+                      disabled={false}
+                      multiline
+                      rows={4}
+                      style={{ width: '100%' }}
+                      onBlur={handleOnblur}
+                      onChange={(event) => {
+                        setEmployee({ ...employee, bio: event.target.value })
+                      }}
+                      variant='standard'
+                    />
+                  </ListItemText>
                 </ListItem>
               </List>
             </CardContent>
           </Box>
           <Box sx={{ justifyContent: 'flex-end', position: 'absolute', right: '0' }}>
-            <CardMedia component='img' sx={{ width: 151 }} image={employee.image} alt={employee.name} />
+            <CardMedia component='img' sx={{ width: 151 }} image={employee?.image} alt={employee?.name} />
           </Box>
         </Card>
       </Grid>

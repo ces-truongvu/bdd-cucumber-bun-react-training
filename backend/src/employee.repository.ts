@@ -63,7 +63,7 @@ export class EmployeeRepository {
     })
   }
 
-  public updateEmployee(employee: EmployeeType): Promise<void> {
+  public updateEmployee(employee: EmployeeType): Promise<EmployeeType> {
     return new Promise((resolve, reject) => {
       fs.readFile(this.filePath, 'utf8', (err, data) => {
         if (err) {
@@ -77,7 +77,7 @@ export class EmployeeRepository {
               if (err) {
                 reject(err)
               } else {
-                resolve()
+                resolve(employee)
               }
             })
           } else {
