@@ -1,11 +1,11 @@
 import { expect, Response } from '@playwright/test'
-import { requestContext } from '../setup/api'
+import { requestContext } from '../../setup/api'
 import { Given, When, Then } from '@cucumber/cucumber'
 
 let response: Response
 
 When('a GET request is made to the endpoint {string}', async function (string) {
-  response = await requestContext.get(`/api/v1${string}`)
+  response = await requestContext.get(`/api${string}`)
 })
 
 Then('the response status code should be {int}', async function (int) {

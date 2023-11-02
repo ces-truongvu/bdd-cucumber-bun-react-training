@@ -4,7 +4,7 @@ module.exports = {
       --require-module ts-node/register
       --format-options \'{"snippetInterface": "synchronous"}\'
       --require steps/**/*.steps.ts
-      --require backend-api/**/*.api.ts
+      --require steps/api/**/*.api.ts
       --format progress
       --format json:reports/cucumber_report.json
       --format html:./reports/cucumber_report.html

@@ -1,9 +1,9 @@
 import { expect } from '@playwright/test'
-import { page } from '../setup/hooks'
+import { page } from '../../setup/hooks'
 import { Given, When, Then } from '@cucumber/cucumber'
 
 Given('I am currently logged in', async function () {
-  await page.goto('http://localhost:5173/')
+  await page.goto('/')
 })
 
 When('I click the Log out button', async function () {

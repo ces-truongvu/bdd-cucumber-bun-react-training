@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useLoaderData } from 'react-router-dom'
 import {
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
   Grid,
   Breadcrumbs,
@@ -17,6 +16,8 @@ import {
   InputAdornment
 } from '@mui/material'
 import { Person, Email, Phone, House, CardMembership } from '@mui/icons-material'
+import Snackbar from '@mui/material/Snackbar'
+import Alert from '@mui/material/Alert'
 import { Link } from 'react-router-dom'
 import { EmployeeType, updateEmployee } from '~/services/EmployeeService'
 
@@ -25,11 +26,16 @@ export function EmployeeDetail() {
   const [employee, setEmployee] = useState<EmployeeType>({ ...getEmployee })
   const debounceUpdate = useDebounce(employee, 500)
 
+  const [open, setOpen] = useState(false)
+  const [message, setMessage] = useState('')
+
   const handleOnblur = () => {
     async function doUpdateData() {
       try {
         await updateEmployee({ ...debounceUpdate })
       } catch (error: Error | any) {
+        setMessage('Unable to update')
+        setOpen(true)
         throw new Error(error?.message || 'Something went wrong')
       }
     }
@@ -174,6 +180,11 @@ export function EmployeeDetail() {
             <CardMedia component='img' sx={{ width: 151 }} image={employee?.image} alt={employee?.name} />
           </Box>
         </Card>
+        <Snackbar autoHideDuration={1000} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={open}>
+          <Alert onClose={() => setOpen(false)} severity='error' sx={{ width: '100%' }}>
+            {message}
+          </Alert>
+        </Snackbar>
       </Grid>
     </>
   )

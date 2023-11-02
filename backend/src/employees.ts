@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia'
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
-import { handler, ResponseType } from './utils'
+import { handler } from './utils'
 import { EmployeeRepository } from './employee.repository'
 
 export type EmployeeType = {
