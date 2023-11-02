@@ -10,7 +10,7 @@ export type SignIn = {
 
 export const users = new Elysia({ prefix: '/users' })
   .model({
-    sign: t.Object({
+    'user.model': t.Object({
       username: t.String(),
       password: t.String()
     })
@@ -38,7 +38,7 @@ export const users = new Elysia({ prefix: '/users' })
       })
     },
     {
-      body: 'sign'
+      body: 'user.model'
       // response: { message: t.String() }
     }
   )

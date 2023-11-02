@@ -18,7 +18,7 @@ const repository = new EmployeeRepository('./src/employees.json')
 
 export const employees = new Elysia({ prefix: '/employees' })
   .model({
-    sign: t.Object({
+    'employee.model': t.Object({
       id: t.String(),
       name: t.String(),
       title: t.String(),
@@ -69,7 +69,7 @@ export const employees = new Elysia({ prefix: '/employees' })
       return employee
     },
     {
-      body: 'sign',
-      response: 'sign'
+      body: 'employee.model',
+      response: 'employee.model'
     }
   )

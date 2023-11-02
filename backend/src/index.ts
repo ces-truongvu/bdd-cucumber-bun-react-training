@@ -6,8 +6,8 @@ const API_VERSION = 'v1'
 const app = new Elysia({
   prefix: `/api/${API_VERSION}`
 })
-  .use(employees)
   .use(users)
+  .use(employees)
   .get('/version', () => API_VERSION)
   .listen(3000)
 
