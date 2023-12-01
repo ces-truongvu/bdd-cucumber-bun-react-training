@@ -17,7 +17,7 @@ Sample project to see how to implement BDD.
 ```sh
 cd auto-testing && npm install
 cd frontend && npm install
-cd backemd && bun install
+cd backend && bun install
 ```
 
 ## Usage
