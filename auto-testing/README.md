@@ -56,6 +56,28 @@ The `example.ts` file contains the reusable functions for specific page.
 
 Open the following [file](./STEPS_TO_FOLLOW.md) to learn how to use this repository step by step.
 
+# Publish report
+
+To publish your report please go through this [article](https://cucumber.io/blog/open-source/cucumber-reports/).
+
+Once you got the publish token, run the following command:
+
+```
+export CUCUMBER_PUBLISH_TOKEN=your-token
+npm run test --publish
+```
+
+Your report will show up like so:
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│ View your Cucumber Report at:                                            │
+│ https://reports.cucumber.io/reports/9fd0de9a-1234-5dfc-937d-7b0211ab340d │
+│                                                                          │
+│ This report was published in collection "YOUR_COLLECTION"                │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
 # Tips
 
 - Asking AI to generate feature file and step file. Sample prompt:
